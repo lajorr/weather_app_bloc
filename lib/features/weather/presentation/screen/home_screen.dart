@@ -92,6 +92,19 @@ class HomeScreen extends StatelessWidget {
               BlocBuilder<WeatherBloc, WeatherState>(
                 builder: (context, state) {
                   if (state is WeatherSuccess) {
+                    String msg = '';
+
+                    final DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                        state.weather.currentTime * 1000);
+
+                    if (date.hour < 12) {
+                      msg = 'Good Morning';
+                    } else if (date.hour < 18) {
+                      msg = 'Good Afternoon';
+                    } else {
+                      msg = 'Good Evening';
+                    }
+
                     return SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
@@ -99,7 +112,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${state.weather.areaName}',
+                            state.weather.areaName,
                             style: const TextStyle(
                               fontWeight: FontWeight.w300,
                             ),
@@ -107,18 +120,17 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(
                             height: 8,
                           ),
-                          const Text(
-                            'Good Morning',
-                            style: TextStyle(
+                          Text(
+                            msg,
+                            style: const TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          // Image.asset('assets/3.png'),
-                          getWeatherIcon(state.weather.weatherConditionCode!),
+                          getWeatherIcon(state.weather.weatherCode),
                           Center(
                             child: Text(
-                              '${state.weather.temperature!.celsius!.round()}°C',
+                              '${state.weather.temp.round()}°C',
                               style: const TextStyle(
                                 fontSize: 55,
                                 fontWeight: FontWeight.w600,
@@ -127,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              state.weather.weatherMain!.toUpperCase(),
+                              state.weather.weatherCondition.toUpperCase(),
                               style: const TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w500,
@@ -139,9 +151,11 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Center(
                             child: Text(
-                              DateFormat('EEEE dd •')
-                                  .add_jm()
-                                  .format(state.weather.date!),
+                              DateFormat('EEEE dd •').add_jm().format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                      state.weather.currentTime * 1000,
+                                    ),
+                                  ),
                               // 'Wednesday 13 • 01:51pm',
                               style: const TextStyle(
                                 fontSize: 16,
@@ -178,9 +192,12 @@ class HomeScreen extends StatelessWidget {
                                         height: 3,
                                       ),
                                       Text(
-                                        DateFormat()
-                                            .add_jm()
-                                            .format(state.weather.sunrise!),
+                                        DateFormat().add_jm().format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                state.weather.sunrise * 1000,
+                                              ),
+                                            ),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -212,9 +229,12 @@ class HomeScreen extends StatelessWidget {
                                         height: 3,
                                       ),
                                       Text(
-                                        DateFormat()
-                                            .add_jm()
-                                            .format(state.weather.sunset!),
+                                        DateFormat().add_jm().format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                state.weather.sunset * 1000,
+                                              ),
+                                            ),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -259,7 +279,7 @@ class HomeScreen extends StatelessWidget {
                                         height: 3,
                                       ),
                                       Text(
-                                        '${state.weather.tempMax!.celsius!.round()}°C',
+                                        '${state.weather.tempMax.round()}°C',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -291,7 +311,7 @@ class HomeScreen extends StatelessWidget {
                                         height: 3,
                                       ),
                                       Text(
-                                        '${state.weather.tempMin!.celsius!.round()}°C',
+                                        '${state.weather.tempMin.round()}°C',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w700,
                                         ),

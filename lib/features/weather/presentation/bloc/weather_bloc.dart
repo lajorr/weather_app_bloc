@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather/weather.dart';
-import 'package:weather_app/constants/data/my_data.dart';
+import 'package:weather_app/features/weather/data/repository/weather_repo.dart';
+
+import '../../data/model/weather.dart' as w;
 
 part 'weather_event.dart';
 part 'weather_state.dart';
@@ -12,16 +13,18 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     on<FetchWeather>((event, emit) async {
       emit(WeatherLoading());
       try {
-        WeatherFactory wf = WeatherFactory(apiKey, language: Language.ENGLISH);
+        // WeatherFactory wf = WeatherFactory(apiKey, language: Language.ENGLISH);
 
-        // Position position = await Geolocator.getCurrentPosition();
+        // Weather weather = await wf.currentWeatherByLocation(
+        //   event.position.latitude,
+        //   event.position.longitude,
+        // );
 
-        Weather weather = await wf.currentWeatherByLocation(
-          event.position.latitude,
-          event.position.longitude,
-        );
-
-       
+        w.Weather weather =
+            await WeatherRepo().fetchApi(event.position); // yo hunxa hola
+        // WeatherData().fetchWeatherApi(event.position); // i dont think this should be accesed like thissu
+        // print(ww);
+        // print(weather);
 
         emit(WeatherSuccess(weather));
       } catch (e) {
