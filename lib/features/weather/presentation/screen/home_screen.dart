@@ -3,36 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/constants/string_constants.dart';
 import 'package:weather_app/features/weather/presentation/bloc/weather_bloc.dart';
+import 'package:weather_app/features/weather/presentation/widgets/weather_icon.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Widget getWeatherIcon(int code) {
-      switch (code) {
-        case >= 200 && < 300:
-          return Image.asset('assets/1.png');
-        case >= 300 && < 400:
-          return Image.asset('assets/2.png');
-
-        case >= 500 && < 600:
-          return Image.asset('assets/3.png');
-        case >= 600 && < 700:
-          return Image.asset('assets/4.png');
-        case >= 700 && < 800:
-          return Image.asset('assets/5.png');
-        case == 800:
-          return Image.asset('assets/6.png');
-        case > 800 && < 804:
-          return Image.asset('assets/7.png');
-
-        default:
-          return Image.asset('assets/7.png');
-      }
-    }
-
     return Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
@@ -98,11 +77,11 @@ class HomeScreen extends StatelessWidget {
                         state.weather.currentTime * 1000);
 
                     if (date.hour < 12) {
-                      msg = 'Good Morning';
+                      msg = StringConstants.goodMorningText;
                     } else if (date.hour < 18) {
-                      msg = 'Good Afternoon';
+                      msg = StringConstants.goodAfternoonText;
                     } else {
-                      msg = 'Good Evening';
+                      msg = StringConstants.goodEveningText;
                     }
                     // main weather widgets
                     return SizedBox(
@@ -127,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          getWeatherIcon(state.weather.weatherCode),
+                          WeatherIcon.getWeatherIcon(state.weather.weatherCode),
                           Center(
                             child: Text(
                               '${state.weather.temp.round()}°C',
@@ -183,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       const Text(
-                                        'Sunrise',
+                                        StringConstants.sunriseText,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300,
                                         ),
@@ -220,7 +199,7 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       const Text(
-                                        'Sunset',
+                                        StringConstants.sunsetText,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300,
                                         ),
@@ -270,7 +249,7 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       const Text(
-                                        'Temp max',
+                                        StringConstants.maxTempText,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300,
                                         ),
@@ -302,7 +281,7 @@ class HomeScreen extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       const Text(
-                                        'Temp min',
+                                        StringConstants.maxTempText,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w300,
                                         ),
@@ -328,14 +307,14 @@ class HomeScreen extends StatelessWidget {
                   } else if (state is WeatherFailure) {
                     return const Center(
                       child: Text(
-                        'Something Went Wrong',
+                        StringConstants.errorText,
                         style: TextStyle(fontSize: 32),
                       ),
                     );
                   } else {
                     return const Center(
                       child: Text(
-                        'Loading ...',
+                        StringConstants.loadingText,
                         style: TextStyle(fontSize: 32),
                       ),
                     );

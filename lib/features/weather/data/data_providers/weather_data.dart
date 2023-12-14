@@ -8,7 +8,8 @@ import 'package:weather_app/constants/data/my_data.dart';
 class WeatherData {
   Future<String?> fetchWeatherApi(Position position) async {
     final url = Uri.parse(
-        "https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=$apiKey&units=metric");
+      MyData.getApiURl(position),
+    );
 
     final response = await http.get(url);
     if (response.statusCode != 200) {
