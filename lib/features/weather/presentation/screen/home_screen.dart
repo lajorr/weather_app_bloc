@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                     } else {
                       msg = 'Good Evening';
                     }
-
+                    // main weather widgets
                     return SizedBox(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
@@ -325,8 +325,20 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     );
+                  } else if (state is WeatherFailure) {
+                    return const Center(
+                      child: Text(
+                        'Something Went Wrong',
+                        style: TextStyle(fontSize: 32),
+                      ),
+                    );
                   } else {
-                    return Container();
+                    return const Center(
+                      child: Text(
+                        'Loading ...',
+                        style: TextStyle(fontSize: 32),
+                      ),
+                    );
                   }
                 },
               ),

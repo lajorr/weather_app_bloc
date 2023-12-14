@@ -20,13 +20,18 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         //   event.position.longitude,
         // );
 
-        w.Weather weather =
+        w.Weather? weather =
             await WeatherRepo().fetchApi(event.position); // yo hunxa hola
         // WeatherData().fetchWeatherApi(event.position); // i dont think this should be accesed like thissu
         // print(ww);
         // print(weather);
 
-        emit(WeatherSuccess(weather));
+        // yo garna milxa???
+        if (weather != null) {
+          emit(WeatherSuccess(weather));
+        } else {
+          emit(WeatherFailure());
+        }
       } catch (e) {
         emit(WeatherFailure());
       }

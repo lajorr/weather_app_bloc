@@ -5,10 +5,14 @@ import 'package:weather_app/features/weather/data/model/weather.dart';
 class WeatherRepo {
   //  WeatherData().fetchWeatherApi(event.position);
 
-  Future<Weather> fetchApi(Position position) async {
+  Future<Weather?> fetchApi(Position position) async {
     final jsonStr = await WeatherData().fetchWeatherApi(position);
     // final jsonStr = await WeatherData().fetchWeatherApi(position);
-
-    return Weather.fromJson(jsonStr);
+    if (jsonStr != null) {
+      return Weather.fromJson(jsonStr);
+    }
+    else{
+      return null;
+    }
   }
 }
